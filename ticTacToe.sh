@@ -18,8 +18,20 @@ function createBoard()
 
 }
 
+function toss()
+{
+	toss=$((RANDOM%2))
+	if(($toss==0))
+	then
+        	echo "Toss won, Player will play first"
+	else
+        	echo "Toss won, Computer will play first"
+	fi
+}
+
 createBoard
 createBoardReset
 echo "Setting up the board and creating"
 sleep 1
 createBoard
+toss
