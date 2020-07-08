@@ -31,11 +31,19 @@ function toss()
 
 function assignValue()
 {
-	value=$((RANDOM%2))
-	if(($value==0))
+	if(($toss==0))
 	then
-        	playerValue=0
-        	computerValue=x
+        	echo "What do you want to choose : for x press 1 , for 0 press 2 ?"
+		read user
+		if(($user==1))
+		then
+			playerValue=x
+                	computerValue=0
+		elif(($user==2))
+		then
+			playerValue=0
+                        computerValue=x
+		fi
         	echo "player is assigned $playerValue and computer is assigned $computerValue"
 	else
         	playerValue=x
@@ -52,3 +60,104 @@ createBoard
 toss
 assignValue
 createBoard
+
+function repeatPlayerComputer()
+{
+        for value in ${filled[@]}
+        do
+                if(($value==$place))
+                then
+                        playerCheck=0
+                        computerCheck=0
+                        break
+                else
+                        playerCheck=1
+                        computerCheck=1
+                fi
+        done
+}
+
+leftPlayer=6
+function playerPlay()
+{
+        filled+=( 0 )
+        playerCheck=0
+        echo "-----------------------------------------------"
+        echo "enter the place where you want to put you value"
+        echo "choose from left outs ---------->> ${board[@]}"
+        read place
+        repeatPlayerComputer
+        while(($playerCheck==0))
+        do
+                repeatPlayerComputer
+                echo "enter new value where you wnat to put out of ${board[@]}"
+                read place
+                repeatPlayerComputer
+                continue
+
+                echo "good to move on"
+        done
+        echo "player choosed $place"
+        unset -v 'board[$place]'
+        board[$place]=$playerValue
+        filled+=( $place )
+        createBoard
+        let "leftPlayer=leftPlayer-1"
+        echo "-----------------------------------------------------------------"
+}
+
+leftComputer=6
+function computerPlay()
+{
+        filled+=( 0 )
+        computerCheck=0
+        echo "------------------------------------------------------------------"
+        echo "computer is choosing the place"
+        echo "choosing from the left outs ------------>> ${board[@]}"
+        place=$((RANDOM%9 + 1))
+        repeatPlayerComputer
+        while(($computerCheck==0))
+        do
+                repeatPlayerComputer
+                echo "COMPUTER is entering new value where you want to put out of ${board[@]}"
+                place=$((RANDOM%9 + 1))
+                repeatPlayerComputer
+                continue
+
+                echo "good to move on"
+        done
+        echo "computer choosed $place"
+        unset -v 'board[$place]'
+        board[$place]=$computerValue
+        filled+=( $place )
+        createBoard
+        let "leftComputer=leftComputer-1"
+        echo "---------------------------------------------------------------------------------"
+}
+
+if(($toss==0))
+then
+        while(($leftPlayer != 1))
+        do
+                playerPlay
+                if(($leftComputer!=2))
+                then
+                        computerPlay
+                sleep 1
+                fi
+        done
+        echo "game is exiting"
+        exit
+else
+        while(($leftComputer != 1))
+        do
+                computerPlay
+                sleep 1
+                if(($leftPlayer!=2))
+                then
+                        playerPlay
+                fi
+        done
+        echo "game is exiting"
+        exit
+fi
