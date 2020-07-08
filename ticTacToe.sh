@@ -23,9 +23,24 @@ function toss()
 	toss=$((RANDOM%2))
 	if(($toss==0))
 	then
-        	echo "Toss won, Player will play first"
+        	echo "Player won the toss, Player will play first"
 	else
-        	echo "Toss won, Computer will play first"
+        	echo "Computer won the toss, Computer will play first"
+	fi
+}
+
+function assignValue()
+{
+	value=$((RANDOM%2))
+	if(($value==0))
+	then
+        	playerValue=0
+        	computerValue=x
+        	echo "player is assigned $playerValue and computer is assigned $computerValue"
+	else
+        	playerValue=x
+        	computerValue=0
+        	echo "player is assigned $playerValue and computer is assigned $computerValue"
 	fi
 }
 
@@ -35,3 +50,5 @@ echo "Setting up the board and creating"
 sleep 1
 createBoard
 toss
+assignValue
+createBoard
