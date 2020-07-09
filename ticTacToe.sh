@@ -31,6 +31,7 @@ function toss()
 function assignValue()
 {
 	if(($toss==0))
+<<<<<<< HEAD
 	then
         	echo "What do you want to choose : for x press 1 , for 0 press 2 ?"
 		read user
@@ -44,6 +45,21 @@ function assignValue()
                         computerValue=x
 		fi
         	echo "player is assigned $playerValue and computer is assigned $computerValue"
+=======
+        then
+                echo "What do you want to choose : for x press 1 , for 0 press 2 ?"
+                read user
+                if(($user==1))
+                then
+                        playerValue=x
+                        computerValue=0
+                elif(($user==2))
+                then
+                        playerValue=0
+                        computerValue=x
+                fi
+		echo "player is assigned $playerValue and computer is assigned $computerValue"
+>>>>>>> uc3_assignedLetters
 	else
         	playerValue=x
         	computerValue=0
