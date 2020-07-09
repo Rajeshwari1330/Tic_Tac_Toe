@@ -123,8 +123,7 @@ function computerWinCheck()
                                         board[$3]=0
                                         selfWin=1
                                 fi
-
-                        fi
+			fi
                 fi
 	elif(($user == 2))
 	then
@@ -145,6 +144,55 @@ function computerWinCheck()
 	fi
 }
 
+selfBlock=0
+gameOver=0
+function blockUser()
+{
+        if(($user == 1))
+        then
+                if [[ ${board[$1]} == x ]]
+                then
+                        if [[ ${board[$2]} == x ]]
+                        then
+                                place=$3
+                                repeatPlayerComputer
+                                if(($computerCheck==1))
+                                then
+                                        if(($selfWin==1))
+                                        then
+                                                gameOver=1
+                                        else
+                                                unset -v 'board[$3]'
+                                                board[$3]=0
+                                                selfBlock=1
+                                        fi
+                                fi
+                        fi
+                fi
+        elif(($user == 2))
+        then
+                if [[ ${board[$1]} == 0 ]]
+                then
+                        if [[ ${board[$2]} == 0 ]]
+                        then
+                                place=$3
+                                repeatPlayerComputer
+                                if(($computerCheck==1))
+                                then
+                                        if(($selfWin==1))
+                                        then
+                                                gameOver=1
+                                        else
+                                                unset -v 'board[$3]'
+                                                board[$3]=x
+                                                selfBlock=1
+                                        fi
+                                fi
+                        fi
+                fi
+        fi
+}
+
 function checkComputerWin()
 {
         computerWinCheck 1 2 3	computerWinCheck 2 3 1	computerWinCheck 3 1 2	computerWinCheck 3 2 1	computerWinCheck 2 1 3	computerWinCheck 1 3 2
@@ -157,6 +205,18 @@ function checkComputerWin()
         computerWinCheck 3 5 7	computerWinCheck 5 7 3	computerWinCheck 7 3 5	computerWinCheck 7 5 3	computerWinCheck 5 3 7	computerWinCheck 3 7 5
 }
 
+function checkBlockUser()
+{
+        blockUser 1 2 3	blockUser 2 3 1	blockUser 3 1 2	blockUser 3 2 1	blockUser 2 1 3	blockUser 1 3 2
+        blockUser 4 5 6	blockUser 5 6 4	blockUser 6 4 5	blockUser 6 5 4	blockUser 5 4 6	blockUser 4 6 5	
+	blockUser 7 8 9	blockUser 8 9 7	blockUser 9 7 8	blockUser 9 8 7	blockUser 8 7 9	blockUser 7 9 8
+        blockUser 1 4 7	blockUser 4 7 1	blockUser 7 1 4	blockUser 7 4 1	blockUser 4 1 7	blockUser 1 7 4
+        blockUser 2 5 8	blockUser 5 8 2	blockUser 8 2 5	blockUser 8 5 2	blockUser 5 2 8	blockUser 2 8 5
+        blockUser 3 6 9	blockUser 6 9 3	blockUser 9 3 6	blockUser 9 6 3	blockUser 6 3 9	blockUser 3 9 6
+        blockUser 1 5 9	blockUser 5 9 1	blockUser 9 1 5	blockUser 9 5 1	blockUser 5 1 9	blockUser 1 9 5
+        blockUser 3 5 7	blockUser 5 7 3	blockUser 7 3 5	blockUser 7 5 3	blockUser 5 3 7	blockUser 3 7 5
+}
+
 leftComputer=6
 function computerPlay()
 {
@@ -166,12 +226,16 @@ function computerPlay()
 	echo "computer is choosing the place"
 	echo "choosing from the left outs ------------>> ${board[@]}"
 	checkComputerWin
+	checkBlockUser
 	if(($selfWin==1))
 	then
 		echo "Winning board is"
 		createBoard
 		echo "Computer is winner"
 		exit
+	elif(($selfBlock==1))
+        then
+                echo "Computer blocked you"
 	else
 		place=$((RANDOM%9 + 1))
 	fi
@@ -181,12 +245,16 @@ function computerPlay()
 	do
                 repeatPlayerComputer
 		checkComputerWin
+		checkBlockUser
 		if(($selfWin==1))
 		then
                         echo "Winning board is"
                         createBoard
                         echo "Computer is winner"
        	                exit
+		elif(($selfBlock==1))
+                then
+                        gameOver=1
 		else
 			place=$((RANDOM%9 + 1))
 		fi
