@@ -15,7 +15,6 @@ function createBoard()
         echo "${board[4]} | ${board[5]} | ${board[6]}"
         echo "-----------"
         echo "${board[7]} | ${board[8]} | ${board[9]}"
-
 }
 
 function toss()
@@ -94,8 +93,6 @@ function playerPlay()
                 read place
                 repeatPlayerComputer
                 continue
-
-                echo "good to move on"
         done
         echo "player choosed $place"
         unset -v 'board[$place]'
@@ -122,8 +119,6 @@ function computerPlay()
                 place=$((RANDOM%9 + 1))
                 repeatPlayerComputer
                 continue
-
-                echo "good to move on"
         done
         echo "computer choosed $place"
         unset -v 'board[$place]'
@@ -202,8 +197,7 @@ then
 
                 fi
         done
-        echo "game is tie !! no one is winner"
-        echo "game is exiting"
+        echo "game is tie !! no one is winner... Game is existing."
         exit
 else
         while(($leftComputer != 1))
@@ -227,8 +221,7 @@ else
                         fi
                 fi
         done
-        echo "game is tie !! no one is winner"
-        echo "game is exiting"
+        echo "Game is tie !! No one is winner... Game is existing."
         exit
 fi
 
